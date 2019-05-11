@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import MovieCard from "../movie-card/movie-card.jsx";
 
 const Main = (props) => {
-  const {movies} = props;
+  const {movies, onTitleClick} = props;
   return (
     <div>
       <div className="visually-hidden">
@@ -128,6 +128,7 @@ const Main = (props) => {
 
           <MovieCard
             movies={movies}
+            onTitleClick={onTitleClick}
           />
 
           <div className="catalog__more">
@@ -154,7 +155,8 @@ const Main = (props) => {
 };
 
 Main.propTypes = {
-  movies: PropTypes.array.isRequired
+  movies: PropTypes.array.isRequired,
+  onTitleClick: PropTypes.func.isRequired
 };
 
 export default Main;
