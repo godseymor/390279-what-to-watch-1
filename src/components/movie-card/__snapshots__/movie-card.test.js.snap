@@ -14,7 +14,7 @@ exports[`renders correctly 1`] = `
     className="small-movie-card__image"
   >
     <img
-      alt="undefined"
+      alt="Fantastic Beasts"
       height="175"
       src="img/fantastic-beasts-the-crimes-of-grindelwald.jpg"
       width="280"
@@ -27,7 +27,9 @@ exports[`renders correctly 1`] = `
     <a
       className="small-movie-card__link"
       href="movie-page.html"
-    />
+    >
+      Fantastic Beasts
+    </a>
   </h3>
 </article>
 `;

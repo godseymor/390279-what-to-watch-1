@@ -5,13 +5,7 @@ import MovieCard from './movie-card';
 it(`renders correctly`, () => {
   const onTitleClick = () => null;
   const tree = renderer
-    .create(<MovieCard movies={[
-      `Fantastic Beasts`,
-      `Bohemian Rhapsody`,
-      `Macbeth`,
-      `Aviator`
-    ]}
-    onTitleClick={onTitleClick}/>)
+    .create(<MovieCard movie={`Fantastic Beasts`} onTitleClick={onTitleClick}/>)
     .toJSON();
 
   expect(tree).toMatchSnapshot();

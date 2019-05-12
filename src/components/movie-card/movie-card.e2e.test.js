@@ -10,18 +10,13 @@ describe(`<MovieCard />`, () => {
 
   it(`simulate click on movie card`, () => {
     const container = shallow(<MovieCard
-      movies={[
-        `Fantastic Beasts`,
-        `Bohemian Rhapsody`,
-        `Macbeth`,
-        `Aviator`
-      ]}
+      movie={`Fantastic Beasts`}
       onTitleClick={handleClick}/>
     );
 
     const movieTitle = container.find(`.small-movie-card__title`);
-    movieTitle.forEach((title) => title.simulate(`click`));
+    movieTitle.simulate(`click`);
 
-    expect(handleClick).toHaveBeenCalledTimes(movieTitle.length);
+    expect(handleClick).toHaveBeenCalledTimes(1);
   });
 });
