@@ -384,6 +384,7 @@ exports[`renders correctly 1`] = `
           </div>
           <h3
             className="small-movie-card__title"
+            onClick={[Function]}
           >
             <a
               className="small-movie-card__link"
@@ -414,6 +415,7 @@ exports[`renders correctly 1`] = `
           </div>
           <h3
             className="small-movie-card__title"
+            onClick={[Function]}
           >
             <a
               className="small-movie-card__link"
@@ -444,6 +446,7 @@ exports[`renders correctly 1`] = `
           </div>
           <h3
             className="small-movie-card__title"
+            onClick={[Function]}
           >
             <a
               className="small-movie-card__link"
@@ -474,6 +477,7 @@ exports[`renders correctly 1`] = `
           </div>
           <h3
             className="small-movie-card__title"
+            onClick={[Function]}
           >
             <a
               className="small-movie-card__link"

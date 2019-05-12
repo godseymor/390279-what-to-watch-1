@@ -126,10 +126,9 @@ const Main = (props) => {
             </li>
           </ul>
 
-          <MovieCard
-            movies={movies}
-            onTitleClick={onTitleClick}
-          />
+          <div className="catalog__movies-list">
+            {movies.map((movie, i) => <MovieCard movie={movie} key={i} onTitleClick={onTitleClick} />)}
+          </div>
 
           <div className="catalog__more">
             <button className="catalog__button" type="button">Show more</button>
