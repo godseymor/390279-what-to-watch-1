@@ -2,20 +2,16 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Main from "./components/main/main.jsx";
 
-const init = () => {
-  const movieTitleClickHandler = () => null;
+import films from './mocks/films';
 
-  const movies = [
-    `Fantastic Beasts`,
-    `Bohemian Rhapsody`,
-    `Macbeth`,
-    `Aviator`
-  ];
+const onTitleClick = () => null;
+
+const init = () => {
 
   ReactDOM.render(
       <Main
-        movies = {movies}
-        onTitleClick = {movieTitleClickHandler}
+        films={films}
+        onTitleClick={onTitleClick}
       />,
       document.querySelector(`#root`)
   );
