@@ -10,35 +10,32 @@ describe(`<MovieCard />`, () => {
 
   const movie = {
     movieTitle: `test`,
-    movieImageSrc: `test.png`
+    movieImageSrc: `test.png`,
+    moviePreview: `video.mp4`
   };
 
-  it(`simulate click on title and play button in movie card`, () => {
+  it(`simulate click on title in movie card`, () => {
     const container = shallow(<MovieCard
       movie={movie}
       onTitleClick={handleClick}
-      onHover={handleClick}/>
+    />
     );
 
     const movieTitle = container.find(`.small-movie-card__title`);
-    const moviePlayButton = container.find(`button`);
 
     movieTitle.simulate(`click`);
-    moviePlayButton.simulate(`click`);
 
-    expect(handleClick).toHaveBeenCalledTimes(2);
+    expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
-  it(`movie card handle item`, () => {
+  it(`Movie card handle mouse correclty`, () => {
     const container = shallow(<MovieCard
       movie={movie}
       onTitleClick={handleClick}
-      onHover={handleClick}
+      onMouseEnter={handleClick}
     />);
 
-    const moviePlayButton = container.find(`button`);
-    moviePlayButton.simulate(`click`);
-
-    expect(handleClick).toHaveBeenCalledWith(movie.movieTitle);
+    container.simulate(`mouseEnter`, handleClick);
+    expect(handleClick).toHaveBeenCalledTimes(1);
   });
 });

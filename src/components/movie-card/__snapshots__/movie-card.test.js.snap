@@ -4,27 +4,22 @@ exports[`renders correctly 1`] = `
 <article
   className="small-movie-card catalog__movies-card"
   onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
 >
-  <button
-    className="small-movie-card__play-btn"
-    onClick={[Function]}
-    type="button"
-  >
-    Play
-  </button>
   <div
     className="small-movie-card__image"
   >
-    <img
-      alt="test"
-      height="175"
-      src="test.png"
-      width="280"
+    <video
+      height={175}
+      muted={true}
+      poster="test.png"
+      src="video.mp4"
+      width={280}
     />
   </div>
   <h3
     className="small-movie-card__title"
-    onClick={[Function]}
+    onClick={[MockFunction]}
   >
     <a
       className="small-movie-card__link"
