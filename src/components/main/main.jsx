@@ -5,20 +5,6 @@ import MoviesList from "../movies-list/movies-list.jsx";
 class Main extends PureComponent {
   constructor(props) {
     super(props);
-
-    this.state = {
-      selectedMovie: {
-        movieTitle: ``
-      }
-    };
-
-    this._handleMouseHover = this._handleMouseHover.bind(this);
-  }
-
-  _handleMouseHover(movie) {
-    this.setState({
-      selectedMovie: movie
-    });
   }
 
   render() {
@@ -149,7 +135,6 @@ class Main extends PureComponent {
             <MoviesList
               films={films}
               onTitleClick={onTitleClick}
-              onHover={this._handleMouseHover}
             />
 
             <div className="catalog__more">
@@ -179,7 +164,8 @@ class Main extends PureComponent {
 Main.propTypes = {
   films: PropTypes.arrayOf(PropTypes.shape({
     movieTitle: PropTypes.string.isRequired,
-    movieImageSrc: PropTypes.string.isRequired
+    movieImageSrc: PropTypes.string.isRequired,
+    moviePreview: PropTypes.string.isRequired
   })).isRequired,
   onTitleClick: PropTypes.func.isRequired
 };

@@ -6,7 +6,8 @@ it(`renders correctly`, () => {
 
   const movie = {
     movieTitle: `test`,
-    movieImageSrc: `test.png`
+    movieImageSrc: `test.png`,
+    moviePreview: `video.mp4`
   };
 
   const tree = renderer
