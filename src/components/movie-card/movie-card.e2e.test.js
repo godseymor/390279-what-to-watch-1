@@ -9,6 +9,7 @@ describe(`<MovieCard />`, () => {
   const handleClick = jest.fn();
 
   const movie = {
+    movieId: `1`,
     movieTitle: `test`,
     movieImageSrc: `test.png`,
     moviePreview: `video.mp4`
@@ -33,9 +34,10 @@ describe(`<MovieCard />`, () => {
       movie={movie}
       onTitleClick={handleClick}
       onMouseEnter={handleClick}
+      onChange={handleClick}
     />);
 
     container.simulate(`mouseEnter`, handleClick);
-    expect(handleClick).toHaveBeenCalledTimes(1);
+    expect(handleClick).toHaveBeenCalledTimes(2);
   });
 });

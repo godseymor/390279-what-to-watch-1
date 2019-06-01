@@ -5,6 +5,7 @@ import MovieCard from './movie-card';
 it(`renders correctly`, () => {
 
   const movie = {
+    movieId: `1`,
     movieTitle: `test`,
     movieImageSrc: `test.png`,
     moviePreview: `video.mp4`

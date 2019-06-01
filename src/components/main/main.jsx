@@ -1,7 +1,10 @@
 import React, {PureComponent} from "react";
 import PropTypes from "prop-types";
 import MoviesList from "../movies-list/movies-list.jsx";
-import Filter from "../filter/filter.jsx";
+import GenreList from "../genre-list/genre-list.jsx";
+import withActiveItem from "../../hocs/with-active-item/with-active-item.jsx";
+
+const MoviesListWrapper = withActiveItem(MoviesList);
 
 class Main extends PureComponent {
   constructor(props) {
@@ -100,8 +103,8 @@ class Main extends PureComponent {
           <section className="catalog">
             <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-            <Filter/>
-            <MoviesList
+            <GenreList/>
+            <MoviesListWrapper
               films={films}
               onTitleClick={onTitleClick}
             />

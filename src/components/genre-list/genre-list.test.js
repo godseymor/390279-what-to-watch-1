@@ -1,11 +1,11 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import {Filter} from "./filter.jsx";
+import {GenreList} from "./genre-list.jsx";
 
-it(`Filter correctly renders after relaunch`, () => {
+it(`GenreList correctly renders after relaunch`, () => {
   const handleClick = jest.fn();
   const tree = renderer
-    .create(<Filter genreFilter={`all`} changeFilter={handleClick} />)
+    .create(<GenreList genreFilter={`all`} changeFilter={handleClick} />)
     .toJSON();
   expect(tree).toMatchSnapshot();
 });
