@@ -5,15 +5,19 @@ import {connect} from "react-redux";
 import MovieCard from '../movie-card/movie-card.jsx';
 
 class MoviesList extends PureComponent {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
-    const {films, onTitleClick} = this.props;
+    const {activeItem, films, onChange, onTitleClick} = this.props;
     return (
       <div className="catalog__movies-list">
-        {films.map((movie, i) => <MovieCard movie={movie} key={i} onTitleClick={onTitleClick} />)}
+        {films.map((movie, i) =>
+          <MovieCard
+            movie={movie}
+            key={i}
+            onTitleClick={onTitleClick}
+            isPlaying={movie.movieId === activeItem}
+            onChange={onChange}
+          />)}
       </div>
     );
   }
@@ -21,6 +25,8 @@ class MoviesList extends PureComponent {
 
 
 MoviesList.propTypes = {
+  activeItem: PropTypes.string,
+  onChange: PropTypes.func,
   films: PropTypes.array.isRequired,
   onTitleClick: PropTypes.func
 };

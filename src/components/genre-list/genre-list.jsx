@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 import genres from "../../mocks/genres";
 
-class Filter extends React.Component {
+class GenreList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,7 +29,7 @@ class Filter extends React.Component {
   }
 }
 
-Filter.propTypes = {
+GenreList.propTypes = {
   genreFilter: PropTypes.string.isRequired,
   changeFilter: PropTypes.func.isRequired
 };
@@ -42,6 +42,6 @@ const mapDispatchToProps = (dispatch) => ({
   changeFilter: (value) => dispatch(ActionCreator.changeGenre(value))
 });
 
-export {Filter};
+export {GenreList};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Filter);
+export default connect(mapStateToProps, mapDispatchToProps)(GenreList);
