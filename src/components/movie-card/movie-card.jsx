@@ -1,7 +1,6 @@
 import React, {PureComponent} from "react";
 import {number, string, func} from "prop-types";
 
-import withVideo from "../../hocs/with-video/with-video.jsx";
 import Player from "../player/player.jsx";
 
 class MovieCard extends PureComponent {
@@ -11,12 +10,6 @@ class MovieCard extends PureComponent {
 
     this._handelMouseEnter = this._handelMouseEnter.bind(this);
     this._handelMouseLeave = this._handelMouseLeave.bind(this);
-  }
-
-  componentDidMount() {
-    const {checkVideoLoadStatus} = this.props;
-
-    checkVideoLoadStatus(this._videoRef.current.video.current);
   }
 
   render() {
@@ -41,16 +34,14 @@ class MovieCard extends PureComponent {
   }
 
   _handelMouseEnter() {
-    const {id, onSmallCardEnter, getVideoLoadStatus} = this.props;
+    const {id, onSmallCardEnter} = this.props;
 
-    if (getVideoLoadStatus) {
-      this.timer = setTimeout(
-          function () {
-            this._videoRef.current.video.current.play();
-          }.bind(this),
-          1000
-      );
-    }
+    this.timer = setTimeout(
+        function () {
+          this._videoRef.current.video.current.play();
+        }.bind(this),
+        1000
+    );
 
     onSmallCardEnter(id);
   }
@@ -68,9 +59,7 @@ MovieCard.propTypes = {
   title: string.isRequired,
   poster: string.isRequired,
   preview: string.isRequired,
-  onSmallCardEnter: func.isRequired,
-  checkVideoLoadStatus: func.isRequired,
-  getVideoLoadStatus: func.isRequired
+  onSmallCardEnter: func.isRequired
 };
 
-export default withVideo(MovieCard);
+export default MovieCard;
