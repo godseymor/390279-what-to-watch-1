@@ -1,43 +1,50 @@
-import React from 'react';
-import Enzyme, {shallow} from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import MovieCard from './movie-card';
+import React from "react";
+import Enzyme, {mount} from "enzyme";
+import Adapter from "enzyme-adapter-react-16";
+
+import SmallMovieCard from "./movie-card.jsx";
 
 Enzyme.configure({adapter: new Adapter()});
 
-describe(`<MovieCard />`, () => {
-  const handleClick = jest.fn();
+const mockedFilm = {
+  id: 1,
+  title: `John Wick`,
+  poster: `img/fantastic-beasts-the-crimes-of-grindelwald.jpg`,
+  preview: `https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4`
+};
 
-  const movie = {
-    movieId: `1`,
-    movieTitle: `test`,
-    movieImageSrc: `test.png`,
-    moviePreview: `video.mp4`
-  };
+const mocks = Object.assign(mockedFilm, {
+  mouseHandler: jest.fn()
+});
 
-  it(`simulate click on title in movie card`, () => {
-    const container = shallow(<MovieCard
-      movie={movie}
-      onTitleClick={handleClick}
-    />
+describe(`SmallMovieCard:`, () => {
+  it(`Card should run callback on mouse enter`, () => {
+    const smallMovieCard = mount(
+        <SmallMovieCard
+          id={mocks.id}
+          title={mocks.title}
+          poster={mocks.poster}
+          preview={mocks.preview}
+          onSmallCardEnter={mocks.mouseHandler}
+        />
     );
 
-    const movieTitle = container.find(`.small-movie-card__title`);
-
-    movieTitle.simulate(`click`);
-
-    expect(handleClick).toHaveBeenCalledTimes(1);
+    smallMovieCard.simulate(`mouseenter`);
+    expect(mocks.mouseHandler).toHaveBeenCalledTimes(1);
   });
 
-  it(`Movie card handle mouse correclty`, () => {
-    const container = shallow(<MovieCard
-      movie={movie}
-      onTitleClick={handleClick}
-      onMouseEnter={handleClick}
-      onChange={handleClick}
-    />);
+  it(`Card should return film index on mouse enter`, () => {
+    const smallMovieCard = mount(
+        <SmallMovieCard
+          id={mocks.id}
+          title={mocks.title}
+          poster={mocks.poster}
+          preview={mocks.preview}
+          onSmallCardEnter={mocks.mouseHandler}
+        />
+    );
 
-    container.simulate(`mouseEnter`, handleClick);
-    expect(handleClick).toHaveBeenCalledTimes(2);
+    smallMovieCard.simulate(`mouseleave`);
+    expect(mocks.mouseHandler).toHaveBeenCalledWith(mocks.id);
   });
 });

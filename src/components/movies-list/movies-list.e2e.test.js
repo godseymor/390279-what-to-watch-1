@@ -1,7 +1,10 @@
 import React from "react";
-import renderer from "react-test-renderer";
+import Enzyme, {mount} from "enzyme";
+import Adapter from "enzyme-adapter-react-16";
 
-import Main from "./main.jsx";
+import MoviesList from "./movies-list.jsx";
+
+Enzyme.configure({adapter: new Adapter()});
 
 const mocks = {
   films: [
@@ -53,23 +56,15 @@ const mocks = {
     `Sci-Fi`,
     `Thrillers`
   ],
-  activeGenre: `All genres`,
   functionHandler: jest.fn()
 };
 
-describe(`Main:`, () => {
-  it(`Correctly renders after relaunch`, () => {
-    const tree = renderer
-      .create(
-          <Main
-            films={mocks.films}
-            activeGenre={mocks.activeGenre}
-            onGenreClick={mocks.functionHandler}
-            genres={mocks.genres}
-          />
-      )
-      .toJSON();
+describe(`MoviesList:`, () => {
+  it(`Should change activeItem state on small-card film index after mouse enter card`, () => {
+    const moviesList = mount(<MoviesList films={mocks.films} />);
 
-    expect(tree).toMatchSnapshot();
+    const smallMovieCard = moviesList.find(`.small-movie-card`).last();
+    smallMovieCard.simulate(`mouseenter`);
+    expect(moviesList.state(`activeItem`)).toEqual(5);
   });
 });

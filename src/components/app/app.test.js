@@ -1,7 +1,7 @@
 import React from "react";
 import renderer from "react-test-renderer";
 
-import Main from "./main.jsx";
+import {App} from "./app.jsx";
 
 const mocks = {
   films: [
@@ -57,15 +57,15 @@ const mocks = {
   functionHandler: jest.fn()
 };
 
-describe(`Main:`, () => {
+describe(`App:`, () => {
   it(`Correctly renders after relaunch`, () => {
     const tree = renderer
       .create(
-          <Main
+          <App
             films={mocks.films}
+            genres={mocks.genres}
             activeGenre={mocks.activeGenre}
             onGenreClick={mocks.functionHandler}
-            genres={mocks.genres}
           />
       )
       .toJSON();

@@ -1,48 +1,76 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, {PureComponent} from "react";
+import {number, string, func} from "prop-types";
 
-import Player from '../player/player.jsx';
+import withVideo from "../../hocs/with-video/with-video.jsx";
+import Player from "../player/player.jsx";
 
-const settings = {
-  width: 280,
-  height: 175
-};
+class MovieCard extends PureComponent {
+  constructor(props) {
+    super(props);
+    this._videoRef = React.createRef();
 
-const MovieCard = (props) => {
-  const {movie, onTitleClick, isPlaying, onChange} = props;
-  const {movieId, movieTitle, movieImageSrc, moviePreview} = movie;
-  const {width, height} = settings;
+    this._handelMouseEnter = this._handelMouseEnter.bind(this);
+    this._handelMouseLeave = this._handelMouseLeave.bind(this);
+  }
 
-  return (
-    <article
-      className="small-movie-card catalog__movies-card"
-      onMouseEnter={() => onChange(movieId)}
-      onMouseLeave={onChange}>
-      <div className="small-movie-card__image">
-        <Player
-          moviePoster={movieImageSrc}
-          moviePreview={moviePreview}
-          settings={{width, height, isMuted: true}}
-          isPlaying={isPlaying}
-        />
-      </div>
-      <h3 className="small-movie-card__title" onClick={onTitleClick}>
-        <a className="small-movie-card__link" href="movie-page.html">{movieTitle}</a>
-      </h3>
-    </article>
-  );
-};
+  componentDidMount() {
+    const {checkVideoLoadStatus} = this.props;
+
+    checkVideoLoadStatus(this._videoRef.current.video.current);
+  }
+
+  render() {
+    const {title, poster, preview} = this.props;
+
+    return (
+      <article
+        className="small-movie-card catalog__movies-card"
+        onMouseEnter={this._handelMouseEnter}
+        onMouseLeave={this._handelMouseLeave}
+      >
+        <div className="small-movie-card__image">
+          <Player preview={preview} poster={poster} ref={this._videoRef} />
+        </div>
+        <h3 className="small-movie-card__title">
+          <a className="small-movie-card__link" href="movie-page.html">
+            {title}
+          </a>
+        </h3>
+      </article>
+    );
+  }
+
+  _handelMouseEnter() {
+    const {id, onSmallCardEnter, getVideoLoadStatus} = this.props;
+
+    if (getVideoLoadStatus) {
+      this.timer = setTimeout(
+          function () {
+            this._videoRef.current.video.current.play();
+          }.bind(this),
+          1000
+      );
+    }
+
+    onSmallCardEnter(id);
+  }
+
+  _handelMouseLeave() {
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this._videoRef.current.video.current.load();
+    }
+  }
+}
 
 MovieCard.propTypes = {
-  movie: PropTypes.shape({
-    movieId: PropTypes.string.isRequired,
-    movieTitle: PropTypes.string.isRequired,
-    movieImageSrc: PropTypes.string.isRequired,
-    moviePreview: PropTypes.string.isRequired,
-  }).isRequired,
-  onTitleClick: PropTypes.func.isRequired,
-  onChange: PropTypes.func,
-  isPlaying: PropTypes.bool
+  id: number.isRequired,
+  title: string.isRequired,
+  poster: string.isRequired,
+  preview: string.isRequired,
+  onSmallCardEnter: func.isRequired,
+  checkVideoLoadStatus: func.isRequired,
+  getVideoLoadStatus: func.isRequired
 };
 
-export default MovieCard;
+export default withVideo(MovieCard);

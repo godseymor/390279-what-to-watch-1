@@ -1,37 +1,37 @@
 export default [
   {
-    movieId: `1`,
-    movieTitle: `Fantastic Beasts: The Crimes of Grindelwald`,
-    movieImageSrc: `img/fantastic-beasts-the-crimes-of-grindelwald.jpg`,
-    moviePreview: `https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4`,
-    movieGenre: `comedy`
+    id: `1`,
+    title: `John Wick`,
+    genre: [`Crime`],
+    poster: `img/fantastic-beasts-the-crimes-of-grindelwald.jpg`,
+    preview: `https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4`
   },
   {
-    movieId: `2`,
-    movieTitle: `Bohemian Rhapsody`,
-    movieImageSrc: `img/bohemian-rhapsody.jpg`,
-    moviePreview: `https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4`,
-    movieGenre: `crime`
+    id: `2`,
+    title: `Killers Bodyguard`,
+    genre: [`Crime`, `Comedies`],
+    poster: `img/fantastic-beasts-the-crimes-of-grindelwald.jpg`,
+    preview: `https://upload.wikimedia.org/wikipedia/commons/transcoded/b/b3/Big_Buck_Bunny_Trailer_400p.ogv/Big_Buck_Bunny_Trailer_400p.ogv.360p.webm`
   },
   {
-    movieId: `3`,
-    movieTitle: `Macbeth`,
-    movieImageSrc: `img/macbeth.jpg`,
-    moviePreview: `https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4`,
-    movieGenre: `documentary`
+    id: `3`,
+    title: `Star Wars`,
+    genre: [`Sci-Fi`],
+    poster: `img/fantastic-beasts-the-crimes-of-grindelwald.jpg`,
+    preview: `https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4`
   },
   {
-    movieId: `4`,
-    movieTitle: `Aviator`,
-    movieImageSrc: `img/aviator.jpg`,
-    moviePreview: `https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4`,
-    movieGenre: `drama`
+    id: `4`,
+    title: `The Grand Budapest Hotel`,
+    genre: [`Dramas`, `Comedies`],
+    poster: `img/fantastic-beasts-the-crimes-of-grindelwald.jpg`,
+    preview: `https://upload.wikimedia.org/wikipedia/commons/transcoded/b/b3/Big_Buck_Bunny_Trailer_400p.ogv/Big_Buck_Bunny_Trailer_400p.ogv.360p.webm`
   },
   {
-    movieId: `5`,
-    movieTitle: `We need to talk about Kevin`,
-    movieImageSrc: `img/we-need-to-talk-about-kevin.jpg`,
-    moviePreview: `https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4`,
-    movieGenre: `horror`
+    id: `5`,
+    title: `The Cabin in the Woods`,
+    genre: [`Thrillers`],
+    poster: `img/fantastic-beasts-the-crimes-of-grindelwald.jpg`,
+    preview: `https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4`
   }
 ];

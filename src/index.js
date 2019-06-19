@@ -1,30 +1,34 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Main from "./components/main/main.jsx";
+import {createStore, applyMiddleware} from "redux";
+import {Provider} from "react-redux";
+import thunk from "redux-thunk";
+import {compose} from "recompose";
 
-import {createStore} from 'redux';
-import {Provider} from 'react-redux';
-
-import {reducer} from './reducers/reducer';
-import films from './mocks/films';
-
-const onTitleClick = () => null;
-
-/* eslint-disable no-underscore-dangle */
-const store = createStore(
-    reducer,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
-/* eslint-enable */
+import App from "./components/app/app.jsx";
+import {createAPI} from "./api";
+import reducer from "./reducers/index.js";
+import {Operation} from "./reducers/films-data/films-data";
 
 const init = () => {
+  const api = createAPI((...args) => store.dispatch(...args));
+
+  /* eslint-disable no-underscore-dangle */
+  const store = createStore(
+      reducer,
+      compose(
+          applyMiddleware(thunk.withExtraArgument(api)),
+          window.__REDUX_DEVTOOLS_EXTENSION__ &&
+        window.__REDUX_DEVTOOLS_EXTENSION__()
+      )
+  );
+  /* eslint-enable */
+
+  store.dispatch(Operation.loadFilms());
 
   ReactDOM.render(
       <Provider store={store}>
-        <Main
-          films={films}
-          onTitleClick={onTitleClick}
-        />
+        <App />
       </Provider>,
       document.querySelector(`#root`)
   );
