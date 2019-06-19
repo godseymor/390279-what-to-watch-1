@@ -1,34 +1,49 @@
-import React from 'react';
+import React, {PureComponent} from "react";
+import {string, func} from "prop-types";
 
-const withActiveItem = (Component) => {
-  class WithActiveItem extends React.PureComponent {
+const withActiveItem = (WrappedComponent) => {
+  class WithActiveItem extends PureComponent {
     constructor(props) {
       super(props);
 
-      this.state = {
-        activeItem: null
-      };
+      if (props.activeItem) {
+        this.state = {
+          activeItem: props.activeItem
+        };
+      } else {
+        this.state = {
+          activeItem: null
+        };
+      }
 
       this.changeActiveItem = this.changeActiveItem.bind(this);
     }
 
-    changeActiveItem(item) {
-      this.setState({
-        activeItem: item
-      });
+    changeActiveItem(selectedItem) {
+      this.setState({activeItem: selectedItem});
+
+      if (this.props.onGenreClick) {
+        this.props.onGenreClick(selectedItem);
+      }
     }
 
     render() {
       const {activeItem} = this.state;
 
       return (
-        <Component
-          activeItem={activeItem}
-          onChange={this.changeActiveItem}
+        <WrappedComponent
           {...this.props}
-        />);
+          activeItem={activeItem}
+          changeActiveItem={this.changeActiveItem}
+        />
+      );
     }
   }
+
+  WithActiveItem.propTypes = {
+    onGenreClick: func,
+    activeItem: string
+  };
 
   return WithActiveItem;
 };

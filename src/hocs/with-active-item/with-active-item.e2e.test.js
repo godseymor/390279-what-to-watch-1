@@ -2,16 +2,18 @@ import React from "react";
 import {configure, shallow} from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 
-import withActiveItem from './with-active-item.jsx';
+import withActiveItem from "./with-active-item.jsx";
 
 configure({adapter: new Adapter()});
 
-const Mock = () => <div />;
-const MockWrapper = withActiveItem(Mock);
+const MockComponent = () => <div />;
+const MockComponentWrapped = withActiveItem(MockComponent);
 
-it(`HOC correctly change activeItem`, () => {
-  const wrap = shallow(<MockWrapper/>);
+describe(`withActiveItem hoc:`, () => {
+  it(`Should change withActiveItem state when call changeActiveItem to given value`, () => {
+    const wrapper = shallow(<MockComponentWrapped />);
 
-  wrap.instance().changeActiveItem(`active-item`);
-  expect(wrap.state().activeItem).toEqual(`active-item`);
+    wrapper.instance().changeActiveItem(3);
+    expect(wrapper.state().activeItem).toEqual(3);
+  });
 });

@@ -1,27 +1,19 @@
-import React from 'react';
-import renderer from 'react-test-renderer';
+import React from "react";
+import renderer from "react-test-renderer";
 
-import Player from './player.jsx';
+import Player from "./player.jsx";
 
-const mock = {
-  movie: {
-    title: `Fantastic Beasts: The Crimes of Grindelwald`,
-    poster: `poster.jpg`,
-    preview: `video.mp4`,
-  },
+const mocks = {
+  poster: `img/fantastic-beasts-the-crimes-of-grindelwald.jpg`,
+  preview: `https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4`
 };
 
-it(`Player renders correctly`, () => {
-  const props = {
-    moviePreview: mock.movie.preview,
-    moviePoster: mock.movie.poster,
-    settings: {
-      width: 280,
-      height: 175,
-    }
-  };
+describe(`Videoplayer:`, () => {
+  it(`Correctly renders after relaunch`, () => {
+    const tree = renderer
+      .create(<Player poster={mocks.poster} preview={mocks.preview} />)
+      .toJSON();
 
-  const tree = renderer.create(<Player {...props}/>).toJSON();
-
-  expect(tree).toMatchSnapshot();
+    expect(tree).toMatchSnapshot();
+  });
 });

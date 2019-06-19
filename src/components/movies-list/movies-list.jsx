@@ -1,41 +1,41 @@
-import React, {PureComponent} from "react";
-import PropTypes from "prop-types";
-import {connect} from "react-redux";
+import React from "react";
+import {shape, arrayOf, string, func, number} from "prop-types";
 
-import MovieCard from '../movie-card/movie-card.jsx';
+import withActiveItem from "../../hocs/with-active-item/with-active-item.jsx";
+import SmallMovieCard from "../movie-card/movie-card.jsx";
 
-class MoviesList extends PureComponent {
+const MoviesList = (props) => {
+  const {films, changeActiveItem: handelActiveCardChange} = props;
 
-  render() {
-    const {activeItem, films, onChange, onTitleClick} = this.props;
-    return (
-      <div className="catalog__movies-list">
-        {films.map((movie, i) =>
-          <MovieCard
-            movie={movie}
-            key={i}
-            onTitleClick={onTitleClick}
-            isPlaying={movie.movieId === activeItem}
-            onChange={onChange}
-          />)}
-      </div>
-    );
-  }
-}
-
-
-MoviesList.propTypes = {
-  activeItem: PropTypes.string,
-  onChange: PropTypes.func,
-  films: PropTypes.array.isRequired,
-  onTitleClick: PropTypes.func
+  return (
+    <div className="catalog__movies-list">
+      {films.map((film) => (
+        <SmallMovieCard
+          key={`${film.id}${film.name}`}
+          id={film.id}
+          title={film.name}
+          poster={film.poster}
+          preview={film.preview}
+          onSmallCardEnter={handelActiveCardChange}
+        />
+      ))}
+    </div>
+  );
 };
 
-const mapStateToProps = (state, ownProps) =>
-  Object.assign({}, ownProps, {
-    films: state.films
-  });
+MoviesList.propTypes = {
+  films: arrayOf(
+      shape({
+        id: number.isRequired,
+        name: string.isRequired,
+        genre: string.isRequired,
+        poster: string.isRequired,
+        preview: string.isRequired
+      })
+  ).isRequired,
+  changeActiveItem: func.isRequired
+};
 
 export {MoviesList};
 
-export default connect(mapStateToProps)(MoviesList);
+export default withActiveItem(MoviesList);
