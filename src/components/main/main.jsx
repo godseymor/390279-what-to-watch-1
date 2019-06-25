@@ -1,5 +1,6 @@
 import React, {PureComponent} from "react";
 import {shape, arrayOf, string, func, number, bool} from "prop-types";
+import {Link} from "react-router-dom";
 
 import MoviesList from "../movies-list/movies-list.jsx";
 import GenresList from "../genres-list/genres-list.jsx";
@@ -8,7 +9,6 @@ class Main extends PureComponent {
   constructor(props) {
     super(props);
 
-    this._handelSignInClick = this._handelSignInClick.bind(this);
     this._formUserBlock = this._formUserBlock.bind(this);
   }
 
@@ -215,13 +215,9 @@ class Main extends PureComponent {
     if (!authorized) {
       return (
         <div className="user-block">
-          <a
-            href="sign-in.html"
-            className="user-block__link"
-            onClick={this._handelSignInClick}
-          >
+          <Link to="/login" className="user-block__link">
             Sign in
-          </a>
+          </Link>
         </div>
       );
     } else {
@@ -233,11 +229,6 @@ class Main extends PureComponent {
         </div>
       );
     }
-  }
-  _handelSignInClick(evt) {
-    evt.preventDefault();
-    const {showLogIn} = this.props;
-    showLogIn();
   }
 }
 Main.propTypes = {
@@ -255,7 +246,6 @@ Main.propTypes = {
       })
   ).isRequired,
   userAvatar: string,
-  userName: string,
-  showLogIn: func.isRequired
+  userName: string
 };
 export default Main;

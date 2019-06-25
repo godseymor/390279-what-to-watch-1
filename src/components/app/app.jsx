@@ -1,60 +1,54 @@
-import React, {PureComponent} from "react";
+import React from "react";
 import {arrayOf, shape, string, func, number, bool} from "prop-types";
 import {connect} from "react-redux";
+import {Switch, Route} from 'react-router-dom';
 
 import {
   actionChangeGenre,
   actionChangeFilms,
   actionShowAllFilms
 } from "../../reducers/films-data/films-data";
-import {actionChangeAuthorizationRequestStatus} from "../../reducers/user/user";
 
 import Main from "../main/main.jsx";
 import SignIn from "../sign-in/sign-in.jsx";
+import Favorites from '../favorites/favorites.jsx';
 
-class App extends PureComponent {
-  constructor(props) {
-    super(props);
-  }
+const App = (props) => {
+  const {
+    authorized,
+    films,
+    genres,
+    activeGenre,
+    onGenreClick,
+    currentUser
+  } = props;
 
-  render() {
-    const {
-      authorized,
-      authorizationRequired,
-      films,
-      genres,
-      activeGenre,
-      onGenreClick,
-      currentUser,
-      showLogIn
-    } = this.props;
+  const data = {
+    authorized,
+    films,
+    genres,
+    activeGenre,
+    onGenreClick,
+    userAvatar: `https://es31-server.appspot.com/` + currentUser.userAvatar,
+    userName: currentUser.userName
+  };
 
-    const data = {
-      authorized,
-      authorizationRequired,
-      films,
-      genres,
-      activeGenre,
-      onGenreClick,
-      showLogIn,
-      userAvatar: `https://es31-server.appspot.com/` + currentUser.userAvatar,
-      userName: currentUser.userName
-    };
-
-    if (!authorizationRequired) {
-      return <Main {...data} />;
-    } else {
-      return <SignIn />;
-    }
-  }
-}
+  return (
+    <Switch>
+      <Route path="/" exact render={() => <Main {...data} />} />
+      <Route path="/login" render={() => <SignIn />} />
+      <Route
+        path="/favorites"
+        render={() => <Favorites authorized={authorized} />}
+      />
+    </Switch>
+  );
+};
 
 App.propTypes = {
   authorized: bool.isRequired,
-  authorizationRequired: bool.isRequired,
   activeGenre: string.isRequired,
   onGenreClick: func.isRequired,
-  showLogIn: func.isRequired,
   genres: arrayOf(string.isRequired),
   films: arrayOf(
       shape({
@@ -78,7 +72,6 @@ const mapStateToProps = (state) => ({
   films: state.filmsData.films,
   genres: state.filmsData.genres,
   authorized: state.user.authorized,
-  authorizationRequired: state.user.isAuthorizationRequired,
   currentUser: state.user.currentUser
 });
 
@@ -91,10 +84,6 @@ const mapDispatchToProps = (dispatch) => ({
     } else {
       dispatch(actionChangeFilms());
     }
-  },
-
-  showLogIn: () => {
-    dispatch(actionChangeAuthorizationRequestStatus(true));
   }
 });
 
