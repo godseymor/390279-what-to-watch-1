@@ -1,5 +1,6 @@
 import React from "react";
 import renderer from "react-test-renderer";
+import {BrowserRouter} from "react-router-dom";
 
 import Main from "./main.jsx";
 
@@ -61,16 +62,18 @@ describe(`Main:`, () => {
   it(`Correctly renders after relaunch`, () => {
     const tree = renderer
       .create(
-          <Main
-            authorized={false}
-            userAvatar={`ava`}
-            userName={`name`}
-            films={mocks.films}
-            activeGenre={mocks.activeGenre}
-            onGenreClick={mocks.functionHandler}
-            genres={mocks.genres}
-            showLogIn={mocks.functionHandler}
-          />
+          <BrowserRouter>
+            <Main
+              authorized={false}
+              userAvatar={`ava`}
+              userName={`name`}
+              films={mocks.films}
+              activeGenre={mocks.activeGenre}
+              onGenreClick={mocks.functionHandler}
+              genres={mocks.genres}
+              showLogIn={mocks.functionHandler}
+            />
+          </BrowserRouter>
       )
       .toJSON();
 
