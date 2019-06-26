@@ -1,95 +1,217 @@
-import React from "react";
-import {arrayOf, shape, string, func, number, bool} from "prop-types";
+import React, {PureComponent} from "react";
+import {arrayOf, bool, func, number, shape, string} from "prop-types";
+import {compose} from "redux";
 import {connect} from "react-redux";
-import {Switch, Route} from 'react-router-dom';
+import {withRouter} from "react-router";
+import {Switch, Route} from "react-router-dom";
 
 import {
   actionChangeGenre,
   actionChangeFilms,
-  actionShowAllFilms
+  actionShowAllFilms,
+  actionFormVisibleFilms,
+  actionClearVisibleFilms,
+  actionChangeActiveFilm,
+  operationAddFilmToFavorite
 } from "../../reducers/films-data/films-data";
 
 import Main from "../main/main.jsx";
 import SignIn from "../sign-in/sign-in.jsx";
-import Favorites from '../favorites/favorites.jsx';
+import FavoriteMovies from '../favorite-movies/favorite-movies.jsx';
+import MoviePage from "../movie-page/movie-page.jsx";
+import MovieReview from "../movie-review/movie-review.jsx";
 
-const App = (props) => {
-  const {
-    authorized,
-    films,
-    genres,
-    activeGenre,
-    onGenreClick,
-    currentUser
-  } = props;
+class App extends PureComponent {
+  constructor(props) {
+    super(props);
 
-  const data = {
-    authorized,
-    films,
-    genres,
-    activeGenre,
-    onGenreClick,
-    userAvatar: `https://es31-server.appspot.com/` + currentUser.userAvatar,
-    userName: currentUser.userName
-  };
+    this.onHomeRedirect = this.onHomeRedirect.bind(this);
+  }
 
-  return (
-    <Switch>
-      <Route path="/" exact render={() => <Main {...data} />} />
-      <Route path="/login" render={() => <SignIn />} />
-      <Route
-        path="/favorites"
-        render={() => <Favorites authorized={authorized} />}
-      />
-    </Switch>
-  );
-};
+  onHomeRedirect() {
+    const {onActiveFilmSet, onGenreChange, history} = this.props;
 
+    onActiveFilmSet();
+    onGenreChange();
+    history.push(`/`);
+  }
+
+  render() {
+    const {
+      authorized,
+      films,
+      visibleFilms,
+      genres,
+      activeGenre,
+      onGenreChange,
+      onShowMoreClick,
+      activeFilm,
+      onActiveFilmSet,
+      onAddFilmToFavorite
+    } = this.props;
+
+    const mainProps = {
+      authorized,
+      films,
+      visibleFilms,
+      genres,
+      activeGenre,
+      onGenreChange,
+      onShowMoreClick,
+      activeFilm,
+      onActiveFilmSet,
+      onAddFilmToFavorite
+    };
+
+    const favoritesProps = {
+      authorized,
+      onHomeRedirect: this.onHomeRedirect,
+      onGenreChange,
+      onActiveFilmSet
+    };
+
+    const filmProps = {
+      authorized,
+      visibleFilms,
+      activeFilm,
+      onActiveFilmSet,
+      onGenreChange,
+      onHomeRedirect: this.onHomeRedirect,
+      onAddFilmToFavorite
+    };
+
+    const reviewProps = {
+      authorized,
+      activeFilm,
+      onHomeRedirect: this.onHomeRedirect
+    };
+
+    return (
+      <Switch>
+        <Route path="/" exact render={() => <Main {...mainProps} />} />
+        <Route
+          path="/login"
+          render={() => <SignIn onHomeRedirect={this.onHomeRedirect} />}
+        />
+        <Route
+          path="/favorites"
+          render={() => <FavoriteMovies {...favoritesProps} />}
+        />
+        <Route
+          path="/films/:id/review"
+          render={() => <MovieReview {...reviewProps} />}
+        />
+        <Route path="/film/:id" render={() => <MoviePage {...filmProps} />} />
+      </Switch>
+    );
+  }
+}
 App.propTypes = {
   authorized: bool.isRequired,
   activeGenre: string.isRequired,
-  onGenreClick: func.isRequired,
+  onAddFilmToFavorite: func.isRequired,
+  onGenreChange: func.isRequired,
+  onShowMoreClick: func.isRequired,
+  onActiveFilmSet: func.isRequired,
+  history: shape({
+    push: func.isRequired
+  }).isRequired,
+  activeFilm: shape({
+    backgroundImage: string,
+    description: string,
+    director: string,
+    genre: string,
+    id: number,
+    isFavorite: bool,
+    name: string,
+    poster: string,
+    posterImage: string,
+    preview: string,
+    rating: number,
+    released: number,
+    runTime: number,
+    scoresCount: number,
+    starring: arrayOf(string),
+    videoLink: string
+  }).isRequired,
   genres: arrayOf(string.isRequired),
   films: arrayOf(
       shape({
-        id: number.isRequired,
-        name: string.isRequired,
-        genre: string.isRequired,
-        poster: string.isRequired,
-        preview: string.isRequired
+        backgroundImage: string,
+        description: string,
+        director: string,
+        genre: string,
+        id: number,
+        isFavorite: bool,
+        name: string,
+        poster: string,
+        posterImage: string,
+        preview: string,
+        rating: number,
+        released: number,
+        runTime: number,
+        scoresCount: number,
+        starring: arrayOf(string),
+        videoLink: string
       })
   ).isRequired,
-  currentUser: shape({
-    userId: number.isRequired,
-    userEmail: string.isRequired,
-    userName: string.isRequired,
-    userAvatar: string.isRequired
-  })
+  visibleFilms: arrayOf(
+      shape({
+        backgroundImage: string,
+        description: string,
+        director: string,
+        genre: string,
+        id: number,
+        isFavorite: bool,
+        name: string,
+        poster: string,
+        posterImage: string,
+        preview: string,
+        rating: number,
+        released: number,
+        runTime: number,
+        scoresCount: number,
+        starring: arrayOf(string),
+        videoLink: string
+      })
+  ).isRequired
 };
-
 const mapStateToProps = (state) => ({
   activeGenre: state.filmsData.activeGenre,
   films: state.filmsData.films,
+  activeFilm: state.filmsData.activeFilm,
+  visibleFilms: state.filmsData.visibleFilms,
   genres: state.filmsData.genres,
-  authorized: state.user.authorized,
-  currentUser: state.user.currentUser
+  authorized: state.user.authorized
 });
-
 const mapDispatchToProps = (dispatch) => ({
-  onGenreClick: (newGenre) => {
+  onGenreChange: (newGenre = `All genres`) => {
     dispatch(actionChangeGenre(newGenre));
-
     if (newGenre === `All genres`) {
       dispatch(actionShowAllFilms());
     } else {
       dispatch(actionChangeFilms());
     }
+    dispatch(actionClearVisibleFilms());
+    dispatch(actionFormVisibleFilms());
+  },
+  onShowMoreClick: () => {
+    dispatch(actionFormVisibleFilms());
+  },
+  onActiveFilmSet: (filmId = null) => {
+    dispatch(actionChangeActiveFilm(filmId));
+    dispatch(actionClearVisibleFilms());
+    dispatch(actionFormVisibleFilms(filmId));
+  },
+  onAddFilmToFavorite: (filmId, filmStatus) => {
+    dispatch(operationAddFilmToFavorite(filmId, filmStatus));
   }
 });
-
 export {App};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+export default compose(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    ),
+    withRouter
 )(App);

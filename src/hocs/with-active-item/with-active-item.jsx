@@ -1,5 +1,5 @@
-import React, {PureComponent} from "react";
 import {string, func} from "prop-types";
+import React, {PureComponent} from "react";
 
 const withActiveItem = (WrappedComponent) => {
   class WithActiveItem extends PureComponent {
@@ -16,10 +16,10 @@ const withActiveItem = (WrappedComponent) => {
         };
       }
 
-      this.changeActiveItem = this.changeActiveItem.bind(this);
+      this.onActiveItemChange = this.onActiveItemChange.bind(this);
     }
 
-    changeActiveItem(selectedItem) {
+    onActiveItemChange(selectedItem) {
       this.setState({activeItem: selectedItem});
 
       if (this.props.onGenreClick) {
@@ -34,7 +34,7 @@ const withActiveItem = (WrappedComponent) => {
         <WrappedComponent
           {...this.props}
           activeItem={activeItem}
-          changeActiveItem={this.changeActiveItem}
+          onActiveItemChange={this.onActiveItemChange}
         />
       );
     }

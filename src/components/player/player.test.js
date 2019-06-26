@@ -1,19 +1,33 @@
 import React from "react";
 import renderer from "react-test-renderer";
-
 import Player from "./player.jsx";
 
 const mocks = {
-  poster: `img/fantastic-beasts-the-crimes-of-grindelwald.jpg`,
-  preview: `https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4`
+  onPlayerToggle: jest.fn(),
+  onFilmDurationUpdate: jest.fn(),
+  activeFilm: {
+    backgroundImage: `back`,
+    description: `description`,
+    director: `Director`,
+    genre: `Action`,
+    id: 1,
+    isFavorite: false,
+    name: `Title`,
+    poster: `string`,
+    posterImage: `string`,
+    preview: `string`,
+    rating: 5,
+    released: 2018,
+    runTime: 88,
+    scoresCount: 2000,
+    starring: [`1`, `2`, `3`],
+    videoLink: `link`
+  }
 };
 
-describe(`Videoplayer:`, () => {
-  it(`Correctly renders after relaunch`, () => {
-    const tree = renderer
-      .create(<Player poster={mocks.poster} preview={mocks.preview} />)
-      .toJSON();
-
+describe(`Player:`, () => {
+  it(`Сorrectly rendered after reload`, () => {
+    const tree = renderer.create(<Player {...mocks} />).toJSON();
     expect(tree).toMatchSnapshot();
   });
 });

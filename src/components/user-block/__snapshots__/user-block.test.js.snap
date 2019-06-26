@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UserBlock: Сorrectly rendered after reload 1`] = `
+<div
+  className="user-block"
+>
+  <div
+    className="user-block__avatar"
+    onClick={[Function]}
+  >
+    <img
+      alt="userName"
+      height="63"
+      src="https://es31-server.appspot.com/userAvatar"
+      width="63"
+    />
+  </div>
+</div>
+`;

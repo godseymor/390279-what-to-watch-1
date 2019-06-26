@@ -1,36 +1,16 @@
 import React from "react";
 import renderer from "react-test-renderer";
-
 import GenresList from "./genres-list.jsx";
 
 const mocks = {
-  genres: [
-    `All genres`,
-    `Comedies`,
-    `Crime`,
-    `Documentary`,
-    `Dramas`,
-    `Horror`,
-    `Kids & Family`,
-    `Romance`,
-    `Sci-Fi`,
-    `Thrillers`
-  ],
-  activeGenre: `All genres`,
-  functionHandler: jest.fn()
+  genres: [`All genres`, `Action`, `Drama`, `Comedy`],
+  activeItem: `active`,
+  onActiveItemChange: jest.fn()
 };
 
 describe(`GenresList:`, () => {
-  it(`Correctly renders after relaunch`, () => {
-    const tree = renderer
-      .create(
-          <GenresList
-            genres={mocks.genres}
-            activeItem={mocks.activeGenre}
-            onGenreClick={mocks.functionHandler}
-          />
-      )
-      .toJSON();
+  it(`Сorrectly rendered after reload`, () => {
+    const tree = renderer.create(<GenresList {...mocks} />).toJSON();
 
     expect(tree).toMatchSnapshot();
   });

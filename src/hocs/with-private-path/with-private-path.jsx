@@ -1,5 +1,5 @@
-import React, {PureComponent} from "react";
 import {bool} from "prop-types";
+import React, {PureComponent} from "react";
 import {Redirect} from "react-router-dom";
 
 const withPrivatePath = (WrappedComponent) => {

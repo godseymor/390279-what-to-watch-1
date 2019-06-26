@@ -1,37 +1,33 @@
+import {shape, func, bool} from "prop-types";
 import React, {PureComponent} from "react";
-import {func, bool} from "prop-types";
+import {compose} from "redux";
 import {connect} from "react-redux";
-import {Link} from "react-router-dom";
-
-import {Operation} from "../../reducers/user/user";
-
+import {withRouter} from "react-router";
 import withErrors from "../../hocs/with-errors/with-errors.jsx";
+import {operationAuthorizeUser} from "../../reducers/user/user";
 
 class SignIn extends PureComponent {
   constructor(props) {
     super(props);
-
     this._emailRef = React.createRef();
     this._passwordRef = React.createRef();
-
-    this.state = {
-      emailError: false,
-      passwordError: false
-    };
-
     this._handelFormSubmit = this._handelFormSubmit.bind(this);
     this._setMessage = this._setMessage.bind(this);
+    this._handelHomeLinkClick = this._handelHomeLinkClick.bind(this);
+  }
+
+  componentDidUpdate() {
+    const {authorized, history} = this.props;
+
+    if (authorized) {
+      history.goBack();
+    }
   }
 
   render() {
     const {emailError, passwordError} = this.props;
-
-    const emailFieldClass = emailError
-      ? `sign-in__field sign-in__field--error`
-      : `sign-in__field`;
-    const passwordFieldClass = passwordError
-      ? `sign-in__field sign-in__field--error`
-      : `sign-in__field`;
+    const emailFieldClass = emailError ? `sign-in__field sign-in__field--error` : `sign-in__field`;
+    const passwordFieldClass = passwordError ? `sign-in__field sign-in__field--error` : `sign-in__field`;
     const messageElement = this._setMessage();
 
     return (
@@ -131,11 +127,15 @@ class SignIn extends PureComponent {
         <div className="user-page">
           <header className="page-header user-page__head">
             <div className="logo">
-              <Link to="/" className="logo__link">
+              <a
+                href="#"
+                className="logo__link"
+                onClick={this._handelHomeLinkClick}
+              >
                 <span className="logo__letter logo__letter--1">W</span>
                 <span className="logo__letter logo__letter--2">T</span>
                 <span className="logo__letter logo__letter--3">W</span>
-              </Link>
+              </a>
             </div>
 
             <h1 className="page-title user-page__title">Sign in</h1>
@@ -192,11 +192,15 @@ class SignIn extends PureComponent {
 
           <footer className="page-footer">
             <div className="logo">
-              <Link to="/" className="logo__link logo__link--light">
+              <a
+                href="#"
+                onClick={this._handelHomeLinkClick}
+                className="logo__link logo__link--light"
+              >
                 <span className="logo__letter logo__letter--1">W</span>
                 <span className="logo__letter logo__letter--2">T</span>
                 <span className="logo__letter logo__letter--3">W</span>
-              </Link>
+              </a>
             </div>
 
             <div className="copyright">
@@ -207,21 +211,26 @@ class SignIn extends PureComponent {
       </>
     );
   }
+  _handelHomeLinkClick(evt) {
+    evt.preventDefault();
+    const {onHomeRedirect} = this.props;
+    onHomeRedirect();
+  }
   _handelFormSubmit(evt) {
     evt.preventDefault();
     const {
-      changeAuthorizationStatus,
-      validateMail,
-      validatePassword
+      onChangeAuthorizationStatus,
+      onEmailValidate,
+      onPasswordValidate
     } = this.props;
-    const mailIsValid = validateMail(this._emailRef.current.value);
-    const passwordIsValid = validatePassword(this._passwordRef.current.value);
+    const mailIsValid = onEmailValidate(this._emailRef.current.value);
+    const passwordIsValid = onPasswordValidate(this._passwordRef.current.value);
     if (passwordIsValid && mailIsValid) {
       const userInfo = {
         email: this._emailRef.current.value,
         password: this._passwordRef.current.value
       };
-      changeAuthorizationStatus(userInfo);
+      onChangeAuthorizationStatus(userInfo);
     }
   }
   _setMessage() {
@@ -248,23 +257,33 @@ class SignIn extends PureComponent {
   }
 }
 SignIn.propTypes = {
-  changeAuthorizationStatus: func.isRequired,
-  validateMail: func.isRequired,
-  validatePassword: func.isRequired,
+  onHomeRedirect: func.isRequired,
+  onChangeAuthorizationStatus: func.isRequired,
+  onEmailValidate: func.isRequired,
+  onPasswordValidate: func.isRequired,
   emailError: bool.isRequired,
   passwordError: bool.isRequired,
-  authorizationFailed: bool.isRequired
+  authorizationFailed: bool.isRequired,
+  authorized: bool.isRequired,
+  history: shape({
+    push: func.isRequired
+  }).isRequired
 };
 const mapStateToProps = (state) => ({
-  authorizationFailed: state.user.authorizationFailed
+  authorizationFailed: state.user.authorizationFailed,
+  authorized: state.user.authorized
 });
 const mapDispatchToProps = (dispatch) => ({
-  changeAuthorizationStatus: (user) => {
-    dispatch(Operation.authorizeUser(user));
+  onChangeAuthorizationStatus: (user) => {
+    dispatch(operationAuthorizeUser(user));
   }
 });
 export {SignIn};
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withErrors(SignIn));
+export default compose(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    ),
+    withErrors,
+    withRouter
+)(SignIn);

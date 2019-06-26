@@ -1,12 +1,11 @@
-import React from "react";
 import {arrayOf, string, func} from "prop-types";
-
+import React from "react";
 import withActiveItem from "../../hocs/with-active-item/with-active-item.jsx";
 
 const GenresList = (props) => {
   const {
     activeItem: activeGenre,
-    changeActiveItem: handelGenreClick,
+    onActiveItemChange: handelGenreClick,
     genres
   } = props;
 
@@ -15,9 +14,7 @@ const GenresList = (props) => {
       {genres.map((genre) => (
         <li
           key={genre}
-          className={`catalog__genres-item ${
-            genre === activeGenre ? `catalog__genres-item--active` : ``
-          }`}
+          className={`catalog__genres-item ${genre === activeGenre ? `catalog__genres-item--active` : ``}`}
         >
           <a
             href="#"
@@ -38,7 +35,7 @@ const GenresList = (props) => {
 GenresList.propTypes = {
   genres: arrayOf(string.isRequired),
   activeItem: string.isRequired,
-  changeActiveItem: func.isRequired
+  onActiveItemChange: func.isRequired
 };
 
 export default withActiveItem(GenresList);

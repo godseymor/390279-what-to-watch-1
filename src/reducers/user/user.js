@@ -1,5 +1,3 @@
-import history from "../../history";
-
 const initialState = {
   authorizationFailed: false,
   authorized: false,
@@ -32,19 +30,16 @@ const actionSetUserInfo = (currentUser) => ({
   payload: currentUser
 });
 
-const Operation = {
-  authorizeUser: (loginInfo) => (dispatch, _getState, api) => {
-    return api
-      .post(`/login`, loginInfo)
-      .then((response) => {
-        dispatch(actionSetUserInfo(response.data));
-        dispatch(actionChangeAuthorizationStatus(true));
-        history.push(`/`);
-      })
-      .catch(() => {
-        dispatch(actionChangeAuthorizationProcessStatus(true));
-      });
-  }
+const operationAuthorizeUser = (loginInfo) => (dispatch, _getState, api) => {
+  return api
+    .post(`/login`, loginInfo)
+    .then((response) => {
+      dispatch(actionSetUserInfo(response.data));
+      dispatch(actionChangeAuthorizationStatus(true));
+    })
+    .catch(() => {
+      dispatch(actionChangeAuthorizationProcessStatus(true));
+    });
 };
 
 const reducer = (state = initialState, action) => {
@@ -76,8 +71,8 @@ const reducer = (state = initialState, action) => {
 export {
   reducer,
   ActionType,
-  Operation,
-  actionChangeAuthorizationProcessStatus,
   actionChangeAuthorizationStatus,
-  actionSetUserInfo
+  actionChangeAuthorizationProcessStatus,
+  actionSetUserInfo,
+  operationAuthorizeUser
 };
