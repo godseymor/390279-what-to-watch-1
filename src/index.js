@@ -5,7 +5,7 @@ import {Provider} from "react-redux";
 import thunk from "redux-thunk";
 import {Router} from "react-router-dom";
 import history from "./history";
-import {composeWithDevTools} from "redux-devtools-extension/developmentOnly";
+import {compose} from "recompose";
 
 import App from "./components/app/app.jsx";
 import {createAPI} from "./api";
@@ -17,7 +17,11 @@ const init = () => {
 
   const store = createStore(
       reducer,
-      composeWithDevTools(applyMiddleware(thunk.withExtraArgument(api)))
+      compose(
+          applyMiddleware(thunk.withExtraArgument(api)),
+          window.__REDUX_DEVTOOLS_EXTENSION__ &&
+        window.__REDUX_DEVTOOLS_EXTENSION__()
+      )
   );
 
   store.dispatch(operationLoadFilms());
