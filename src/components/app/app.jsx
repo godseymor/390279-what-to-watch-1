@@ -94,14 +94,17 @@ class App extends PureComponent {
           render={() => <SignIn onHomeRedirect={this.onHomeRedirect} />}
         />
         <Route
-          path="/favorites"
+          path="/mylist"
           render={() => <FavoriteMovies {...favoritesProps} />}
         />
         <Route
           path="/films/:id/review"
           render={() => <MovieReview {...reviewProps} />}
         />
-        <Route path="/film/:id" render={() => <MoviePage {...filmProps} />} />
+        <Route
+          path="/film/:id"
+          render={() => <MoviePage {...filmProps} />}
+        />
       </Switch>
     );
   }

@@ -40,7 +40,7 @@ class UserBlock extends PureComponent {
 
   _handelAvatarClick() {
     const {history} = this.props;
-    history.push(`/favorites`);
+    history.push(`/mylist`);
   }
 }
 

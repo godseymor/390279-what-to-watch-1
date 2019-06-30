@@ -221,8 +221,10 @@ class Player extends PureComponent {
   _handelPlayClick() {
     if (this.video.current.paused) {
       this.video.current.play();
+      document.querySelector(`.player__play svg use`).href.baseVal = `#play-s`;
     } else {
       this.video.current.pause();
+      document.querySelector(`.player__play svg use`).href.baseVal = `#pause`;
     }
   }
   _calculateFilmDuration(video) {
